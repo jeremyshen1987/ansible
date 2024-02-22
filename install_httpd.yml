@@ -3,12 +3,14 @@
 - hosts: all
   become: true
   tasks:
-  - name: install apache2 on RHEL 8 
-    dnf: 
-      name: httpd
-    when: ansible_os_family == "RedHat" and ansible_distribution_major_version == "8"
+  - name: install apache2,php on RHEL 8 
+    package: 
+      name:
+       - httpd
+       - php
+    when: ansible_distribution in ['Rocky', 'Fedora'] and ansible_distribution_major_version == "8"
 
   - name: install apache2 on RHEL 7
-    yum: 
+    package: 
       name: httpd
     when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
