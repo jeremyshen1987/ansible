@@ -5,6 +5,8 @@
   tasks:
   - name: install apache2,php on RHEL 8 
     package: 
+      update_only: yes
+      update_cache: yes
       name:
        - httpd
        - php
@@ -14,3 +16,15 @@
     package: 
       name: httpd
     when: ansible_distribution == "CentOS" and ansible_distribution_major_version == "7"
+
+- hosts: [web_server]
+  tags: copy_test
+  become: true
+  tasks: 
+  - name: copy files to web server
+    copy:
+      src: /etc/ansible/index.html
+      dest: /var/www/html/index.html
+      owner: kali
+      group: kali
+      mode: 0777
